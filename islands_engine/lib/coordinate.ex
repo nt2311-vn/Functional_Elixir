@@ -49,4 +49,13 @@ defmodule IslandsEngine.Coordinate do
   def(guess(coordinate)) do
     Agent.update(coordinate, fn state -> Map.put(state, :guessed?, true) end)
   end
+
+  @doc """
+  Function to set coordinate in island when player
+  move around
+  """
+  @spec set_in_island(Coordinate, atom()) :: :ok
+  def set_in_island(coordinate, value) when is_atom(value) do
+    Agent.update(coordinate, fn state -> Map.put(state, :in_island, value) end)
+  end
 end
