@@ -18,7 +18,7 @@ defmodule IslandsEngine.Coordinate do
   @doc """
   Function to return currnet value of key in_island in Coordinate
   """
-  @spec island(Coordinate) :: :none | any()
+  @spec island(Coordinate) :: atom()
   def island(coordinate) do
     Agent.get(coordinate, fn state -> state.in_island end)
   end
@@ -40,5 +40,13 @@ defmodule IslandsEngine.Coordinate do
   @spec hit?(Coordinate) :: boolean()
   def hit?(coordinate) do
     guessed?(coordinate) && in_island?(coordinate)
+  end
+
+  @doc """
+  Function to marked guessed to a Coordinate
+  """
+  @spec guess(Coordinate) :: :ok
+  def(guess(coordinate)) do
+    Agent.update(coordinate, fn state -> Map.put(state, :guessed?, true) end)
   end
 end
