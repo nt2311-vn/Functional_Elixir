@@ -17,4 +17,10 @@ defmodule IslandsEngine.Island do
   def replace_coordinates(island, new_coordinates) when is_list(new_coordinates) do
     Agent.update(island, fn _state -> new_coordinates end)
   end
+
+  def forested?(island) do
+    island
+    |> Agent.get(fn state -> state end)
+    |> Enum.all?(&Coordinate.hit?(&1))
+  end
 end
