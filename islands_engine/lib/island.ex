@@ -23,4 +23,20 @@ defmodule IslandsEngine.Island do
     |> Agent.get(fn state -> state end)
     |> Enum.all?(&Coordinate.hit?(&1))
   end
+
+  @doc """
+  Function to return represent string of an island
+  """
+  @spec to_string(list(Coordinate)) :: charlist()
+  def to_string(island) do
+    "[" <> coordinate_strings(island) <> "]"
+  end
+
+  @spec coordinate_strings(list(Coordinate)) :: charlist()
+  defp coordinate_strings(island) do
+    island
+    |> Agent.get(& &1)
+    |> Enum.map(&Coordinate.to_string(&1))
+    |> Enum.join(", ")
+  end
 end
