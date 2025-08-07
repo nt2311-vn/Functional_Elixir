@@ -4,7 +4,7 @@ defmodule IslandsEngine.Island do
   @doc """
   Function to start an initial state of a Island
   """
-  @spec start_link :: list(Coordinate)
+  @spec start_link :: list(pid)
   def start_link() do
     Agent.start_link(fn -> [] end)
   end
@@ -13,7 +13,7 @@ defmodule IslandsEngine.Island do
   Function to replace a complete new list coordinate to
   old one.
   """
-  @spec replace_coordinates(list(Coordinate), list(Coordinate)) :: :ok
+  @spec replace_coordinates(list(pid), list(pid)) :: :ok
   def replace_coordinates(island, new_coordinates) when is_list(new_coordinates) do
     Agent.update(island, fn _state -> new_coordinates end)
   end
@@ -27,12 +27,12 @@ defmodule IslandsEngine.Island do
   @doc """
   Function to return represent string of an island
   """
-  @spec to_string(list(Coordinate)) :: charlist()
+  @spec to_string(list(pid)) :: charlist()
   def to_string(island) do
     "[" <> coordinate_strings(island) <> "]"
   end
 
-  @spec coordinate_strings(list(Coordinate)) :: charlist()
+  @spec coordinate_strings(list(pid)) :: charlist()
   defp coordinate_strings(island) do
     island
     |> Agent.get(& &1)
