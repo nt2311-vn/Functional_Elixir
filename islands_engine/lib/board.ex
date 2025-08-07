@@ -9,12 +9,21 @@ defmodule IslandsEngine.Board do
   which is an empty map
   """
   def start_link do
-    Agent.start_link(fn -> %{} end)
+    Agent.start_link(fn -> initialized_board() end)
   end
 
-  defp keys do
+  @spec keys :: list(atom())
+  defp keys() do
     for letter <- @letters, number <- @numbers do
       String.to_atom("#{letter}#{number}")
     end
+  end
+
+  @spec initialized_board :: map()
+  defp initialized_board() do
+    Enum.reduce(keys(), %{}, fn key, board ->
+      {:ok, coord} = Coordinate.start_link()
+      Map.put_new(board, key, coord)
+    end)
   end
 end
