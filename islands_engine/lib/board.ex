@@ -30,7 +30,7 @@ defmodule IslandsEngine.Board do
   @doc """
   Function to get a pid to the coordinate by board atom
   """
-  @spec get_coordinate(map(), atom()) :: pid()
+  @spec get_coordinate(pid, atom) :: pid
   def get_coordinate(board, key) when is_atom(key) do
     Agent.get(board, fn board -> board[key] end)
   end
@@ -38,7 +38,7 @@ defmodule IslandsEngine.Board do
   @doc """
   Function to guess a coordiante by its position in board
   """
-  @spec guess_coordinate(map, atom) :: :ok
+  @spec guess_coordinate(pid, atom) :: :ok
   def guess_coordinate(board, key) do
     get_coordinate(board, key)
     |> Coordinate.guess()
@@ -48,7 +48,7 @@ defmodule IslandsEngine.Board do
   Function to return whether a coordinate is hit
   by its board position.
   """
-  @spec coordinate_hit?(map, atom) :: boolean
+  @spec coordinate_hit?(pid, atom) :: boolean
   def coordinate_hit?(board, key) do
     get_coordinate(board, key)
     |> Coordinate.hit?()
@@ -58,7 +58,7 @@ defmodule IslandsEngine.Board do
   Function to set a coordinate to a specific island
   by its board position.
   """
-  @spec set_coordinate_in_island(map, atom, atom) :: :ok
+  @spec set_coordinate_in_island(pid, atom, atom) :: :ok
   def set_coordinate_in_island(board, key, island) do
     get_coordinate(board, key)
     |> Coordinate.set_in_island(island)
@@ -68,7 +68,7 @@ defmodule IslandsEngine.Board do
   Function to return which island a coordinate is in
   by ites board position.
   """
-  @spec coordinate_island(map, atom) :: atom
+  @spec coordinate_island(pid, atom) :: atom
   def coordinate_island(board, key) do
     get_coordinate(board, key)
     |> Coordinate.island()
@@ -82,7 +82,7 @@ defmodule IslandsEngine.Board do
     "%{" <> string_body(board) <> "}"
   end
 
-  @spec string_body(map) :: charlist
+  @spec string_body(pid) :: charlist
   defp string_body(board) do
     Enum.reduce(keys(), "", fn key, acc ->
       coord = get_coordinate(board, key)
