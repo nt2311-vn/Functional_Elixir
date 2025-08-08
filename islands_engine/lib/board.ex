@@ -73,4 +73,20 @@ defmodule IslandsEngine.Board do
     get_coordinate(board, key)
     |> Coordinate.island()
   end
+
+  @doc """
+  Function to return a representation of the board state
+  """
+  @spec to_string(map) :: charlist
+  def to_string(board) do
+    "%{" <> string_body(board) <> "}"
+  end
+
+  @spec string_body(map) :: charlist
+  defp string_body(board) do
+    Enum.reduce(keys(), "", fn key, acc ->
+      coord = get_coordinate(board, key)
+      acc <> "#{key} => #{Coordinate.to_string(coord)},\n"
+    end)
+  end
 end
